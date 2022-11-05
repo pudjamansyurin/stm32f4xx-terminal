@@ -8,19 +8,21 @@
 static void stdin_reader(uint8_t *u8p_buffer, uint16_t u16_size)
 {
     /* do something with received data */
-    terminal_in(u8p_buffer, u16_size);
+    term_in(u8p_buffer, u16_size);
 }
 
 /* Public function definitions */
 int main(void)
 {
+    extern UART_HandleTypeDef huart1;
+
     /* Initialize peripherals */
     MX_GPIO_Init();
     MX_DMA_Init();
     MX_USART1_UART_Init();
 
     /* Initialize terminal */  
-    terminal_init(stdin_reader);
+    term_init(&huart1, stdin_reader, NULL);
 
     /* simulate in-direct stdout */
     printf("Hello World\n");
@@ -47,7 +49,7 @@ void DMA1_Stream5_IRQHandler(void)
 {
     HAL_DMA_IRQHandler(&hdma_usart1_rx);
     /* USER CODE BEGIN DMA1_Stream5_IRQn 1 */
-    terminal_irq(1);
+    term_irq(1);
     /* USER CODE END DMA1_Stream5_IRQn 1 */
 }
 
@@ -58,7 +60,7 @@ void USART1_IRQHandler(void)
 {
     HAL_UART_IRQHandler(&huart1);
     /* USER CODE BEGIN USART1_IRQn 1 */
-    terminal_irq(0);
+    term_irq(0);
     /* USER CODE END USART1_IRQn 1 */
 }
 

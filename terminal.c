@@ -8,25 +8,30 @@
 #include "tinysh/tinysh.h"
 #include <stdio.h>
 
-/* External variables */
-extern UART_HandleTypeDef huart1;
-
 /* Private variables */
 static uint8_t u8_buffer[256];
 
 /* Public function definitions */
-void terminal_init(serial_reader_t reader)
+void term_init(UART_HandleTypeDef *p_uart, stdin_reader_t reader,
+	stdout_locker_t locker)
 {
-    serial_init(&huart1);
-    serial_start(reader, u8_buffer, sizeof(u8_buffer));
+	/* setup serial */
+	serial_init(p_uart, locker);
+	serial_start(reader, u8_buffer, sizeof(u8_buffer));
+
+	/* setup tiny-shell */
+	tinysh_set_prompt("STM32F4> ");
+
+	/* add tiny-shell commands */
+	// tinysh_add_command(&foo);
 }
 
-void terminal_irq(uint8_t u8_dma)
+void term_irq(uint8_t u8_dma)
 {
 	u8_dma ? serial_irq_dma() : serial_irq_uart();
 }
 
-void terminal_in(unsigned char *str, uint16_t size)
+void term_in(unsigned char *str, uint16_t size)
 {
 	while (size--)
 	{

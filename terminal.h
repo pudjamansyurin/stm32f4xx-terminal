@@ -11,8 +11,9 @@
 #include "stm32f4xx-serial/serial.h"
 
 /* Public function declarations */
-void terminal_init(serial_reader_t reader);
-void terminal_irq(uint8_t u8_dma);
-void terminal_in(unsigned char *str, uint16_t size);
+void term_init(UART_HandleTypeDef *p_uart, stdin_reader_t reader,
+	stdout_locker_t locker);
+void term_irq(uint8_t u8_dma);
+void term_in(unsigned char *str, uint16_t size);
 
 #endif /* STM32F4XX_TINYSH_TERMINAL_H_ */
