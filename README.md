@@ -1,9 +1,8 @@
-# STM32F4xx serial module with tiny shell
+# STM32F4xx serial module with tiny-shell
 
 #### **`main.c`**
 ```c
 #include "stm32f4xx-terminal/terminal.h"
-#include "stm32f4xx-terminal/tinysh/tinysh.h"
 
 /* Private function definitions */
 static void stdin_reader(uint8_t *u8p_buffer, uint16_t u16_size)
