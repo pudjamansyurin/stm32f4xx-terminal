@@ -4,13 +4,6 @@
 ```c
 #include "stm32f4xx-terminal/terminal.h"
 
-/* Private function definitions */
-static void stdin_reader(uint8_t *u8p_buffer, uint16_t u16_size)
-{
-    /* do something with received data */
-    term_in(u8p_buffer, u16_size);
-}
-
 /* Public function definitions */
 int main(void)
 {
@@ -22,7 +15,7 @@ int main(void)
     MX_USART1_UART_Init();
 
     /* Initialize terminal */  
-    term_init(&huart1, stdin_reader, NULL);
+    term_init(&huart1, NULL, NULL);
 
     /* simulate in-direct stdout */
     printf("Hello World\n");
@@ -49,7 +42,7 @@ void DMA1_Stream5_IRQHandler(void)
 {
     HAL_DMA_IRQHandler(&hdma_usart1_rx);
     /* USER CODE BEGIN DMA1_Stream5_IRQn 1 */
-    term_irq(1);
+    term_irq(TERM_IRQ_DMA);
     /* USER CODE END DMA1_Stream5_IRQn 1 */
 }
 
@@ -60,7 +53,7 @@ void USART1_IRQHandler(void)
 {
     HAL_UART_IRQHandler(&huart1);
     /* USER CODE BEGIN USART1_IRQn 1 */
-    term_irq(0);
+    term_irq(TERM_IRQ_UART);
     /* USER CODE END USART1_IRQn 1 */
 }
 
